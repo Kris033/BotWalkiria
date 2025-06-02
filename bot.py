@@ -1,0 +1,32 @@
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
+from tocen import TOKEN
+from command import start, help_command, info_command, anime_command, b_command, logs_command, ban_command, unban_command , mut_command , unmut_command, stats_command, randomem_command, rustmeme_command,weather_command
+from triger import kiss_triger, horny_trigger, gf_trigger, rust_trigger
+
+app = ApplicationBuilder().token(TOKEN).build()
+app.add_handler(CommandHandler("start", start))
+app.add_handler(CommandHandler("help", help_command))
+app.add_handler(CommandHandler("info", info_command))
+app.add_handler(CommandHandler("anime", anime_command))
+app.add_handler(CommandHandler("b", b_command))
+app.add_handler(CommandHandler("logs", logs_command))
+app.add_handler(CommandHandler("ban", ban_command))
+app.add_handler(CommandHandler("unban", unban_command))
+app.add_handler(CommandHandler("mut", mut_command))
+app.add_handler(CommandHandler("unmut", unmut_command))
+app.add_handler(CommandHandler("stats", stats_command))
+app.add_handler(CommandHandler("randomem", randomem_command))
+app.add_handler(CommandHandler("rustmeme", rustmeme_command))
+app.add_handler(CommandHandler("weather", weather_command))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)тя бонькнули|бонк'), b_command))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)аниме'), anime_command))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)начать|старт'), start))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)помощь|help'), help_command))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)инфо|info'), info_command))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)поцеловать|чмок|kiss'), kiss_triger))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)хорни'), horny_trigger))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)обнять'), gf_trigger))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)рейд'), rust_trigger))
+
+
+app.run_polling()
