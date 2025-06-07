@@ -7,6 +7,7 @@ from collections import defaultdict
 
 logs = []
 user_stats = defaultdict(lambda: {"messages": 0, "photos": 0, "voices": 0})
+warnings = defaultdict(int)  # user_id: количество предупреждений
 
 async def log_command_usage(update: Update, command: str):
     user = update.effective_user
@@ -19,8 +20,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ["/anime",]
     ]
     reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+    user = update.effective_user
+    username = user.username if user.username else user.first_name
     await update.message.reply_text(
-        "Привет! @use Я бот. Выберите команду:",
+        f"Привет, {username}! Я бот. Выберите команду:",
         reply_markup=reply_markup
     )
 
@@ -58,6 +61,9 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/mut <user_id> [минуты] - Замутить пользователя на время\n"
         "/unmut <user_id> - Размутить пользователя\n"
         "/stats - Статистика пользователей (сообщения, фото, голосовые)\n"
+        "/warn <user_id> - Выдать предупреждение\n"
+        "/unwarn <user_id> - Снять предупреждение\n"
+        "/warnings - Показать список предупреждений\n"
     )
 
 async def info_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -147,6 +153,9 @@ async def unmut_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await update.message.reply_text("Пожалуйста, укажите ID пользователя для размута.")
 
+
+
+
 async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await log_command_usage(update, "/stats")
     if user_stats:
@@ -222,6 +231,46 @@ async def weather_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("Не удалось получить погоду. Попробуйте позже.")
     except Exception:
         await update.message.reply_text("Ошибка при получении погоды.")
+
+async def warn_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await log_command_usage(update, "/warn")
+    if context.args:
+        user_id = context.args[0]
+        try:
+            user_id = int(user_id)
+            warnings[user_id] += 1
+            count = warnings[user_id]
+            await update.message.reply_text(f"Пользователь {user_id} получил предупреждение. Всего предупреждений: {count}")
+        except ValueError:
+            await update.message.reply_text("Неверный ID пользователя.")
+    else:
+        await update.message.reply_text("Пожалуйста, укажите ID пользователя для предупреждения.")
+
+async def unwarn_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await log_command_usage(update, "/unwarn")
+    if context.args:
+        user_id = context.args[0]
+        try:
+            user_id = int(user_id)
+            if warnings[user_id] > 0:
+                warnings[user_id] -= 1
+                await update.message.reply_text(f"С пользователя {user_id} снято предупреждение. Осталось: {warnings[user_id]}")
+            else:
+                await update.message.reply_text(f"У пользователя {user_id} нет предупреждений.")
+        except ValueError:
+            await update.message.reply_text("Неверный ID пользователя.")
+    else:
+        await update.message.reply_text("Пожалуйста, укажите ID пользователя для снятия предупреждения.")
+
+async def warnings_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await log_command_usage(update, "/warnings")
+    if warnings:
+        lines = []
+        for user_id, count in warnings.items():
+            lines.append(f"ID {user_id}: предупреждений — {count}")
+        await update.message.reply_text("\n".join(lines))
+    else:
+        await update.message.reply_text("Пока нет предупреждений.")
 
 
 

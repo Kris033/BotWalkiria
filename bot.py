@@ -1,6 +1,6 @@
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
 from tocen import TOKEN
-from command import start, help_command, info_command, anime_command, b_command, logs_command, ban_command, unban_command , mut_command , unmut_command, stats_command, randomem_command, rustmeme_command,weather_command
+from command import start, help_command, info_command, anime_command, b_command, logs_command, ban_command, unban_command , mut_command , unmut_command, stats_command, randomem_command, rustmeme_command,weather_command, warn_command, unwarn_command, warnings_command
 from triger import kiss_triger, horny_trigger, gf_trigger, rust_trigger
 
 app = ApplicationBuilder().token(TOKEN).build()
@@ -18,6 +18,9 @@ app.add_handler(CommandHandler("stats", stats_command))
 app.add_handler(CommandHandler("randomem", randomem_command))
 app.add_handler(CommandHandler("rustmeme", rustmeme_command))
 app.add_handler(CommandHandler("weather", weather_command))
+app.add_handler(CommandHandler("warn", warn_command))
+app.add_handler(CommandHandler("unwarn", unwarn_command))
+app.add_handler(CommandHandler("warnings", warnings_command))
 app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)тя бонькнули|бонк'), b_command))
 app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)аниме'), anime_command))
 app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)начать|старт'), start))
@@ -27,6 +30,17 @@ app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)поцелов
 app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)хорни'), horny_trigger))
 app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)обнять'), gf_trigger))
 app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)рейд'), rust_trigger))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)бан|ban'), ban_command))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)разбан|unban'), unban_command))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)мут|mut'), mut_command))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)размут|unmut'), unmut_command))   
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)статистика|stats'), stats_command))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)рандом мем|random meme'), randomem_command))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)rust meme|rustmeme|мем по расту'), rustmeme_command))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)погода|weather'), weather_command))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)предупреждение|warn'), warn_command))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)снять предупреждение|unwarn'), unwarn_command))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)предупреждения|warnings'), warnings_command))
 
 
 app.run_polling()
