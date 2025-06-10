@@ -1,6 +1,6 @@
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
 from tocen import TOKEN
-from command import start, help_command, info_command, anime_command, b_command, logs_command, ban_command, unban_command , mut_command , unmut_command, stats_command, randomem_command, rustmeme_command,weather_command, warn_command, unwarn_command, warnings_command
+from command import start, help_command, info_command, anime_command, b_command, logs_command, ban_command, unban_command , mut_command , unmut_command, stats_command, randomem_command, rustmeme_command,weather_command, warn_command, unwarn_command, warnings_command, api_test_command
 from triger import kiss_triger, horny_trigger, gf_trigger, rust_trigger
 
 app = ApplicationBuilder().token(TOKEN).build()
@@ -21,6 +21,7 @@ app.add_handler(CommandHandler("weather", weather_command))
 app.add_handler(CommandHandler("warn", warn_command))
 app.add_handler(CommandHandler("unwarn", unwarn_command))
 app.add_handler(CommandHandler("warnings", warnings_command))
+app.add_handler(CommandHandler("apitest", api_test_command))
 app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)тя бонькнули|бонк'), b_command))
 app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)аниме'), anime_command))
 app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)начать|старт'), start))

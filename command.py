@@ -272,6 +272,18 @@ async def warnings_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await update.message.reply_text("Пока нет предупреждений.")
 
+async def api_test_command(update, context):
+    try:
+        # добавить локал хост крис
+        response = requests.get("http://localhost:5000/api/values")
+        if response.status_code == 200:
+            data = response.json()
+            await update.message.reply_text(f"Ответ от API: {data}")
+        else:
+            await update.message.reply_text("Ошибка при обращении к API.")
+    except Exception as e:
+        await update.message.reply_text(f"Ошибка: {e}")
+
 
 
 
