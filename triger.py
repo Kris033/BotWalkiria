@@ -2,6 +2,8 @@ from telegram import Update
 from telegram.ext import ContextTypes
 from html import escape
 
+owner_id = None  # глобальная переменная для хранения id владельца
+
 async def horny_trigger(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("тя бонькнули 😏")
 
@@ -48,7 +50,18 @@ async def kiss_triger(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(text, parse_mode="HTML")
 
+async def owner_trigger(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global owner_id
+    user = update.effective_user
+
+    if owner_id is None:
+        owner_id = user.id
+        await update.message.reply_text(f"{user.first_name}, теперь вы владелец бота!")
+    elif owner_id == user.id:
+        await update.message.reply_text("Вы уже являетесь владельцем бота.")
+    else:
+        await update.message.reply_text("Владелец уже назначен. Максимум один владелец.")
 
 
 
-    
+

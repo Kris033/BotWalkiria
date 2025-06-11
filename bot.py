@@ -1,7 +1,8 @@
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
 from tocen import TOKEN
 from command import start, help_command, info_command, anime_command, b_command, logs_command, ban_command, unban_command , mut_command , unmut_command, stats_command, randomem_command, rustmeme_command,weather_command, warn_command, unwarn_command, warnings_command, api_test_command
-from triger import kiss_triger, horny_trigger, gf_trigger, rust_trigger
+from triger import kiss_triger, horny_trigger, gf_trigger, rust_trigger, owner_trigger
+
 
 app = ApplicationBuilder().token(TOKEN).build()
 app.add_handler(CommandHandler("start", start))
@@ -42,6 +43,7 @@ app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)погода|w
 app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)предупреждение|warn'), warn_command))
 app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)снять предупреждение|unwarn'), unwarn_command))
 app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)предупреждения|warnings'), warnings_command))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'(?i)^я владелец$'), owner_trigger))
 
 
 app.run_polling()

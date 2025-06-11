@@ -15,11 +15,7 @@ async def log_command_usage(update: Update, command: str):
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await log_command_usage(update, "/start")
-    keyboard = [
-        ["/help", "/info"],
-        ["/anime",]
-    ]
-    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+    reply_markup = ReplyKeyboardMarkup(resize_keyboard=True)
     user = update.effective_user
     username = user.username if user.username else user.first_name
     await update.message.reply_text(
@@ -274,8 +270,8 @@ async def warnings_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def api_test_command(update, context):
     try:
-        # добавить локал хост крис
-        response = requests.get("http://localhost:5000/api/values")
+        # Отключаем проверку SSL-сертификата (ТОЛЬКО для разработки!)
+        response = requests.get("https://localhost:44332/", verify=False)
         if response.status_code == 200:
             data = response.json()
             await update.message.reply_text(f"Ответ от API: {data}")
